@@ -1,0 +1,86 @@
+#CREATING DATABASE
+
+CREATE DATABASE samu;
+USE samu;
+
+CREATE TABLE ambulancia (
+    id_ambulancia INT PRIMARY KEY AUTO_INCREMENT,
+    placa VARCHAR(100),
+    marca VARCHAR(100),
+    status VARCHAR(100)
+);
+
+CREATE TABLE condutores (
+    id_condutor INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    turno VARCHAR(100),
+    idade VARCHAR(100),
+    id_ambulancia INT,
+    FOREIGN KEY (id_ambulancia) REFERENCES ambulancia(id_ambulancia)
+);
+
+CREATE TABLE pacientes (
+    id_paciente INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    fator_rh VARCHAR(5)
+);
+
+CREATE TABLE ocorrencia (
+    id_ocorrencia INT PRIMARY KEY AUTO_INCREMENT,
+    duracao INT,
+    tipo VARCHAR(50),
+    descricao TEXT,
+    id_condutor INT,
+    id_paciente INT,
+    FOREIGN KEY (id_condutor) REFERENCES condutores (id_condutor),
+    FOREIGN KEY (id_paciente) REFERENCES pacientes (id_paciente)
+);
+
+------------------------------------------------------------------------
+# INSERTING INFO IN DB
+
+INSERT INTO ambulancia (placa, marca, status) VALUES
+('ABC-1234', 'Ford', 'Disponível'),
+('XYZ-5678', 'Mercedes', 'Em Manutenção'),
+('DEF-9101', 'Volkswagen', 'Disponível');
+
+
+INSERT INTO condutores (nome, turno, idade, id_ambulancia) VALUES
+('João Silva', 'Noite', '35', 1),
+('Maria Oliveira', 'Dia', '28', 2),
+('Carlos Souza', 'Noite', '40', 3),
+('Joana', 'Noite', '48', 3);
+
+
+
+INSERT INTO pacientes (nome, fator_rh) VALUES
+('Ana Costa', 'A+'),
+('Pedro Alves', 'B-'),
+('Lucia Mendes', 'O+'),
+('Fernando Lima', 'AB+'),
+('Joara Guimaraes', 'AB+');
+
+
+INSERT INTO ocorrencia (duracao, tipo, descricao, id_condutor, id_paciente) VALUES
+(180, 'Acidente de Trânsito', 'Colisão frontal', 1, 1),
+(90, 'Queda', 'Queda de bicicleta', 2, 2),
+(240, 'Acidente de Trânsito', 'Atropelamento', 3, 3),
+(120, 'Mal súbito', 'Desmaio', 1, 4),
+(150, 'Acidente de Trânsito', 'Capotamento', 2, 1),
+(150, 'Acidente domestico', 'Encaminhado para o hospital', 2, 1),
+(165, 'Óbito', 'Encaminhado para o hospital', 4, 1);
+
+------------------------------------------
+# SELECTING INFO 
+
+SELECT * FROM ocorrencia WHERE duracao > 120;
+
+SELECT * FROM ambulancia WHERE status = 'Em Manutenção';
+
+SELECT * FROM condutores WHERE turno = 'Noite';
+
+SELECT * FROM ocorrencia WHERE descricao = 'Encaminhado para o hospital';
+
+SELECT * FROM ocorrencia WHERE tipo = 'Óbito';
+
+SELECT * FROM ocorrencia WHERE tipo = 'Acidente de Trânsito';
